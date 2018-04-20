@@ -6,7 +6,7 @@
     <title>Accès Au Droit</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
-	<link rel="stylesheet" href="https://rawgit.com/stefanocudini/leaflet-search/master/src/leaflet-search.css" />
+	<link rel="stylesheet" href="leaflet-search.css" />
 	<link rel="stylesheet" href="https://rawgit.com/lokesh-coder/pretty-checkbox/master/dist/pretty-checkbox.css" />
     <style>
 
@@ -98,16 +98,18 @@ h3 {
 	margin-right:5px
 }
 
-
-
-.search-tooltip {
-	width: 200px;
+.leaflet-control-search .france-button {
+	display:block;
+	float:left;
+	width:54px;
+	height:54px;	
+	background: url('France_off.png') no-repeat 2px 2px #fff;
+	border-radius:4px;
 }
-.leaflet-control-search .search-cancel {
-	position: static;
-	float: left;
-	margin-left: -22px;
+.leaflet-control-search .france-button:hover {
+	background: url('France_on.png') no-repeat 2px 2px #fafafa;
 }
+
 
     </style>
 </head>
@@ -118,11 +120,14 @@ h3 {
 	
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
-	<script src="https://rawgit.com/stefanocudini/leaflet-search/master/src/leaflet-search.js"></script>
+	<script src="leaflet-search.js"></script>
 	<script src="https://rawgit.com/yigityuce/Leaflet.Control.Custom/master/Leaflet.Control.Custom.js"></script>
 	<script type="text/javascript" src="regions.js"></script>
 	<script type="text/javascript" src="departements.js"></script>
 	<script type="text/javascript" src="associations.js"></script>
+
+	<script type="text/javascript" src="drom.js"></script>
+	<script type="text/javascript" src="cercles_drom.js"></script>
 	
     <script>
 		
@@ -152,21 +157,30 @@ h3 {
 		var orangeIcon = new LeafIcon({iconUrl: 'PICTOS-01.png'}),
 			vertIcon = new LeafIcon({iconUrl: 'PICTOS-02.png'}),
 			violetIcon = new LeafIcon({iconUrl: 'PICTOS-03.png'}),
-			roseIcon = new LeafIcon({iconUrl: 'PICTOS-04.png'}),
+			roseFonceIcon = new LeafIcon({iconUrl: 'PICTOS-04.png'}),
 			bleuIcon = new LeafIcon({iconUrl: 'PICTOS-05.png'});
 			rougeIcon = new LeafIcon({iconUrl: 'PICTOS-06.png'});
+			jauneIcon = new LeafIcon({iconUrl: 'PICTOS-08.png'}),
+			vertFonceIcon = new LeafIcon({iconUrl: 'PICTOS-09.png'}),
+			roseIcon = new LeafIcon({iconUrl: 'PICTOS-10.png'}),
+			marronIcon = new LeafIcon({iconUrl: 'PICTOS-11.png'}),
+			bleuFonceIcon = new LeafIcon({iconUrl: 'PICTOS-12.png'});
+			bordeauxIcon = new LeafIcon({iconUrl: 'PICTOS-13.png'});
 		
 		// Attribution d'une couleur par fédération
 		function colorIcon(fede) {
 			if (fede === "01") return orangeIcon;
 			if (fede === "02") return vertIcon;
 			if (fede === "03") return violetIcon;
-			if (fede === "04") return roseIcon;
+			if (fede === "04") return roseFonceIcon;
 			if (fede === "05") return bleuIcon;
 			if (fede === "06") return rougeIcon;
-			if (fede === "07") return orangeIcon;
-			if (fede === "08") return orangeIcon;
-			if (fede === "09") return orangeIcon;
+			if (fede === "07") return jauneIcon;
+			if (fede === "08") return vertFonceIcon;
+			if (fede === "09") return roseIcon;
+			if (fede === "10") return marronIcon;
+			if (fede === "11") return bleuFonceIcon;
+			if (fede === "13") return bordeauxIcon;
 			else return bleuIcon;
 		}
 			
@@ -174,6 +188,16 @@ h3 {
 		var map = L.map('mapid')
 			.setView([48, 2.2], 6);
 		map.zoomControl.setPosition('topright');
+		
+		
+		/*Ajout du fond de carte ign : TUTO https://geoservices.ign.fr/documentation/utilisation_web/wmts-leaflet.html
+		L.tileLayer("https://wxs.ign.fr/ujorz7d7mcjaj467ejaqcj6l/geoportail/wmts?service=WMTS&request=GetTile&version=1.0.0&tilematrixset=PM&tilematrix={z}&tilecol={x}&tilerow={y}&layer=ORTHOIMAGERY.ORTHOPHOTOS&format=image/jpeg&style=normal",
+			{
+				minZoom:0,
+				maxZoom:18,
+				tileSize:256
+			}
+		).addTo(map) ;*/
 
 		// Choix du fond de carte
 		var basemap = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
@@ -184,7 +208,7 @@ h3 {
 		
 		// Création des popup
 		function onEachFeature(feature, layer) {
-		if(feature.properties.ID_FEDE=="01"){title_color="F0900F"} else if (feature.properties.ID_FEDE=="02"){title_color="99C11F"} else if (feature.properties.ID_FEDE=="03"){title_color="9D88BE"} else if (feature.properties.ID_FEDE=="04"){title_color="DD4E8A"} else if (feature.properties.ID_FEDE=="05"){title_color="2DBBEB"} else if (feature.properties.ID_FEDE=="06"){title_color="F04600"};
+		if(feature.properties.ID_FEDE=="01"){title_color="f0900f"} else if (feature.properties.ID_FEDE=="02"){title_color="99c11f"} else if (feature.properties.ID_FEDE=="03"){title_color="9d88be"} else if (feature.properties.ID_FEDE=="04"){title_color="dd4e8a"} else if (feature.properties.ID_FEDE=="05"){title_color="2dbbeb"} else if (feature.properties.ID_FEDE=="06"){title_color="f04600"}else if (feature.properties.ID_FEDE=="07"){title_color="ffdc00"} else if (feature.properties.ID_FEDE=="08"){title_color="3ca936"}else if (feature.properties.ID_FEDE=="09"){title_color="f29fc3"} else if (feature.properties.ID_FEDE=="10"){title_color="bc8000"}else if (feature.properties.ID_FEDE=="11"){title_color="0069b2"} else if (feature.properties.ID_FEDE=="13"){title_color="881002"};
 		var popupcontent = "<div id='popup' class='ol-popup'><h1 style='background-color: #"+title_color+"'>" + feature.properties.NOM_PERM + " (" +feature.properties.NOM_ASSO + ")</h1><h2></br>Coordonnées</h2><p class='email'>" + feature.properties.NOM_LIEU + ", " + feature.properties.ADRESSE + ", " + feature.properties.COMMUNE + "</p><p class='tel'>" + feature.properties.TEL_PERM + " / " + feature.properties.TEL_NAT + "</p><p>" + feature.properties.HORAIRE + "</p><p>" + feature.properties.INTERNET + "</p><h2 style='color: #"+title_color+"'>Spécialisé dans : </h2><p>Droit des étrangers, droits sociaux, violences à caractère raciste, violences à caractère sexiste, lutte contres les discriminations</p><h2 style='color: #"+title_color+"'>Accompagnement proposé au public : </h2><p>Accompagnement social, juridique, psychologique, médical</p><h2 style='color: #"+title_color+"'>Public pris en charge : </h2><p>Spécifique personnes âgées, femme / tout public</p><p  style='color: #727272; font-style: italic'>" + feature.properties.COM + "</p></div>";
 		layer.bindPopup(popupcontent);
 		}
@@ -274,10 +298,8 @@ h3 {
             })
             .addTo(map);
 			
-			//Création de la barre de recherche par département et Région
+			/*Création de la barre de recherche par département et Région
 			var geoLayers = L.layerGroup([L.geoJson(reg),L.geoJson(dep)]);
-			
-
 			var controlSearch = new L.Control.Search({
 				position:'topright',
 				layer: geoLayers,
@@ -292,11 +314,25 @@ h3 {
 				}
 			});
 			map.addControl(controlSearch);
-			map.removeLayer(geoLayers);
+			map.removeLayer(geoLayers);*/
+			
+			
+			map.addControl( new L.Control.Search({
+				url: 'http://nominatim.openstreetmap.org/search/?countrycodes=fr&format=json&q={s}',
+				jsonpParam: 'json_callback',
+				position:'topright',
+				propertyName: 'display_name',
+				propertyLoc: ['lat','lon'],
+				marker: false,
+				zoom: 11,
+				autoCollapse: false,
+				autoType: false,
+				minLength: 2
+			}) );
+
 			
 			// Bouton "revenir à la vue par défaut"
-			HelloWorldControl = function(theHelloWorldFunction) {
-
+			vueInitiale = function(LaFonctionVueInitiale) {
 			var control = new (L.Control.extend({
 			options: { position: 'topright' },
 			onAdd: function (map) {
@@ -304,27 +340,27 @@ h3 {
 				L.DomEvent
 					.addListener(controlDiv, 'click', L.DomEvent.stopPropagation)
 					.addListener(controlDiv, 'click', L.DomEvent.preventDefault)
-					.addListener(controlDiv, 'click', this.HelloWorldFunction);
+					.addListener(controlDiv, 'click', this.FonctionVueInitiale);
 
 				// Set CSS for the control border
-				var controlUI = L.DomUtil.create('div', 'hello-world-button-border', controlDiv);
-				controlUI.title = 'Click for Hello World!';
+				var controlUI = L.DomUtil.create('div', 'leaflet-container leaflet-control-search', controlDiv);
+				controlUI.title = 'Revenir à la vue initiale';
 
 				// Set CSS for the control interior
-				var controlText = L.DomUtil.create('div', 'hello-world-button-interior', controlUI);
-				controlText.innerHTML = 'Hello World';
+				var controlText = L.DomUtil.create('div', 'france-button', controlUI);
+				controlText.innerHTML = '<div style="background: url(France_off.png) no-repeat 2px 2px #fff"> ';
 
 				return controlDiv;
 			}
 			}));
 
-			control.HelloWorldFunction = theHelloWorldFunction;
+			control.FonctionVueInitiale = LaFonctionVueInitiale;
 
 			return control;
 			};
 
-			HelloWorldFunction = function () { alert("Hello World");};
-			map.addControl(HelloWorldControl(HelloWorldFunction));
+			FonctionVueInitiale = function () { map.setView([48, 2.2], 6);;};
+			map.addControl(vueInitiale(FonctionVueInitiale));
 
    </script>
 	
