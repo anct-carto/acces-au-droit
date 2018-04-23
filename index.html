@@ -6,7 +6,7 @@
     <title>Accès Au Droit</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
-	<link rel="stylesheet" href="leaflet-search.css" />
+	<link rel="stylesheet" href="src/leaflet-search.css" />
 	<link rel="stylesheet" href="https://rawgit.com/lokesh-coder/pretty-checkbox/master/dist/pretty-checkbox.css" />
     <style>
 
@@ -81,7 +81,7 @@ h3 {
 }
 .ol-popup .email:before {
 	content:"";
-	background: url(picto_couriel.png) no-repeat;
+	background: url(img/picto_couriel.png) no-repeat;
 	display:inline-block;
 	width:10px;
 	height:10px;
@@ -90,7 +90,7 @@ h3 {
 }
 .ol-popup .tel:before {
 	content:"";
-	background:url(picto_telephone.png) no-repeat;
+	background:url(img/picto_telephone.png) no-repeat;
 	display:inline-block;
 	width:10px;
 	height:10px;
@@ -103,11 +103,11 @@ h3 {
 	float:left;
 	width:54px;
 	height:54px;	
-	background: url('France_off.png') no-repeat 2px 2px #fff;
+	background: url('img/France_off.png') no-repeat 2px 2px #fff;
 	border-radius:4px;
 }
 .leaflet-control-search .france-button:hover {
-	background: url('France_on.png') no-repeat 2px 2px #fafafa;
+	background: url('img/France_on.png') no-repeat 2px 2px #fafafa;
 }
 
 
@@ -120,18 +120,14 @@ h3 {
 	
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
     <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
-	<script src="leaflet-search.js"></script>
+	<script src="src/leaflet-search.js"></script>
 	<script src="https://rawgit.com/yigityuce/Leaflet.Control.Custom/master/Leaflet.Control.Custom.js"></script>
-	<script type="text/javascript" src="regions.js"></script>
-	<script type="text/javascript" src="departements.js"></script>
-	<script type="text/javascript" src="associations.js"></script>
-
-	<script type="text/javascript" src="drom.js"></script>
-	<script type="text/javascript" src="cercles_drom.js"></script>
+	
+	<script type="text/javascript" src="data/associations.js"></script>
+	
 	
     <script>
 		
-		function test() {alert('coucou')};
 		// Initialisation des variables pour le filtre attributaire
 		var accompagne = "oui"; 
 		var violence = "oui"; 
@@ -154,18 +150,18 @@ h3 {
 		}
 		});
 		
-		var orangeIcon = new LeafIcon({iconUrl: 'PICTOS-01.png'}),
-			vertIcon = new LeafIcon({iconUrl: 'PICTOS-02.png'}),
-			violetIcon = new LeafIcon({iconUrl: 'PICTOS-03.png'}),
-			roseFonceIcon = new LeafIcon({iconUrl: 'PICTOS-04.png'}),
-			bleuIcon = new LeafIcon({iconUrl: 'PICTOS-05.png'});
-			rougeIcon = new LeafIcon({iconUrl: 'PICTOS-06.png'});
-			jauneIcon = new LeafIcon({iconUrl: 'PICTOS-08.png'}),
-			vertFonceIcon = new LeafIcon({iconUrl: 'PICTOS-09.png'}),
-			roseIcon = new LeafIcon({iconUrl: 'PICTOS-10.png'}),
-			marronIcon = new LeafIcon({iconUrl: 'PICTOS-11.png'}),
-			bleuFonceIcon = new LeafIcon({iconUrl: 'PICTOS-12.png'});
-			bordeauxIcon = new LeafIcon({iconUrl: 'PICTOS-13.png'});
+		var orangeIcon = new LeafIcon({iconUrl: 'img/PICTOS-01.png'}),
+			vertIcon = new LeafIcon({iconUrl: 'img/PICTOS-02.png'}),
+			violetIcon = new LeafIcon({iconUrl: 'img/PICTOS-03.png'}),
+			roseFonceIcon = new LeafIcon({iconUrl: 'img/PICTOS-04.png'}),
+			bleuIcon = new LeafIcon({iconUrl: 'img/PICTOS-05.png'});
+			rougeIcon = new LeafIcon({iconUrl: 'img/PICTOS-06.png'});
+			jauneIcon = new LeafIcon({iconUrl: 'img/PICTOS-08.png'}),
+			vertFonceIcon = new LeafIcon({iconUrl: 'img/PICTOS-09.png'}),
+			roseIcon = new LeafIcon({iconUrl: 'img/PICTOS-10.png'}),
+			marronIcon = new LeafIcon({iconUrl: 'img/PICTOS-11.png'}),
+			bleuFonceIcon = new LeafIcon({iconUrl: 'img/PICTOS-12.png'});
+			bordeauxIcon = new LeafIcon({iconUrl: 'img/PICTOS-13.png'});
 		
 		// Attribution d'une couleur par fédération
 		function colorIcon(fede) {
@@ -214,8 +210,8 @@ h3 {
 		}
 		
 		// Ajout des couches
-		var REGIONS = new L.geoJSON(reg, {"color": "#ffffff", "weight": 1, "opacity": 0, fillOpacity: 0});
-		var DEPARTEMENTS = new L.geoJSON(dep, {"color": "#ffffff", "weight": 1, "opacity": 0, fillOpacity: 0});
+		//var REGIONS = new L.geoJSON(reg, {"color": "#ffffff", "weight": 1, "opacity": 0, fillOpacity: 0});
+		//var DEPARTEMENTS = new L.geoJSON(dep, {"color": "#ffffff", "weight": 1, "opacity": 0, fillOpacity: 0});
 		var Assos = new L.geoJSON;
 		
 		function AjouterAssos(accompagne, violence, psy, social, generaliste) {
@@ -348,7 +344,7 @@ h3 {
 
 				// Set CSS for the control interior
 				var controlText = L.DomUtil.create('div', 'france-button', controlUI);
-				controlText.innerHTML = '<div style="background: url(France_off.png) no-repeat 2px 2px #fff"> ';
+				controlText.innerHTML = '<div style="background: url(img/France_off.png) no-repeat 2px 2px #fff"> ';
 
 				return controlDiv;
 			}
