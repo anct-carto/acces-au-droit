@@ -3,493 +3,360 @@
 
 <head>
     <meta charset="utf-8" />
-    <title>Accès Au Droit</title>
+    <title>AccesAuDroit</title>
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.0.3/dist/leaflet.css" />
+    <link rel="shortcut icon" type="image/png" />
+	<link href="//maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.3/dist/leaflet.css" />
 	<link rel="stylesheet" href="src/leaflet-search.css" />
-	<link rel="stylesheet" href="https://rawgit.com/lokesh-coder/pretty-checkbox/master/dist/pretty-checkbox.css" />
-    <style>
+    <!--[if lte IE 8]><link rel="stylesheet" href="//cdn.leafletjs.com/leaflet-0.7.2/leaflet.ie.css" /><![endif]-->
 
-body {
-    margin: 0;
-    padding: 0;
-}
+    <link rel="stylesheet" href="src/leaflet-sidebar.css" />
+	<link rel="stylesheet" href="style.css" />
 
-#mapid {
-     position: absolute;
-     top: 0;
-     bottom: 0;
-     width: 100%;
-	 height: 100%;
-}
-
-.global {
-	background-color:white;
-}
-
-#bloc1 {float:left; }
-#bloc2 {float:left; }
-#bloc3 {float:left; }
-
-h3 {
-	color: #3e505b;
-	font-weight:bold;
-	text-decoration: underline;
-	font-size:1em;
-	text-transform: uppercase;
-}
-
-.btn-group-sm {
-	background-color:white;
-	border-radius:7px;
-	-moz-border-radius:7px;
-	-webkit-border-radius:7px;
-	box-shadow: 0 1px 5px rgba(0,0,0,0.65);
-}
-
-.bloc {
-	padding:10px;	
-	margin:0px;
-	
-}
-	
-.ol-popup {
-	background-color:white;
-	min-width:220px;
-	max-width:350px;
-	font-family: Trebuchet MS, verdana, sans serif; 
-}
- .ol-popup h1,.ol-popup .h1 {
-	margin:-20px;
-	color:#fff;
-	font-weight:bold;
-	padding:15px;
-	font-size:1.1em;
-	border-radius:6px 6px 0 0;
-	-moz-border-radius:6px 6px 0 0;
-	-webkit-border-radius:6px 6px 0 0
-}
-.ol-popup h2 ,.ol-popup .h2{
-	font-weight:bold;
-	font-size:1em;
-	text-decoration: underline;
-}
-.ol-popup p {
-	margin:10px 0;
-	font-size:1em;
-	line-height:1em
-}
-.ol-popup .email:before {
-	content:"";
-	background: url(img/picto_couriel.png) no-repeat;
-	display:inline-block;
-	width:10px;
-	height:10px;
-	background-size:contain;
-	margin-right:5px
-}
-.ol-popup .tel:before {
-	content:"";
-	background:url(img/picto_telephone.png) no-repeat;
-	display:inline-block;
-	width:10px;
-	height:10px;
-	background-size:contain;
-	margin-right:5px
-}
-
-.leaflet-control-search .france-button {
-	display:block;
-	float:left;
-	width:54px;
-	height:54px;	
-	background: url('img/France_off.png') no-repeat 2px 2px #fff;
-	border-radius:4px;
-}
-.leaflet-control-search .france-button:hover {
-	background: url('img/France_on.png') no-repeat 2px 2px #fafafa;
-}
-
-
-    </style>
 </head>
 
 <body>
+    <div id="sidebar" class="sidebar collapsed">
+        <div class="sidebar-tabs">
+            <ul role="tablist">
+                <li><a href="#home" role="tab" id="logo"><i class="fa fa-home"></i></a></li>
+				<li><a href="img/AccesAuDroit.jpg" role="tab" target="_blank" title="Télécharger la carte"><i class="fa fa-download"></i></a></li>
+            </ul>
+        </div>
 
-	<div id="mapid" style=""></div>
+        <!-- Tab panes -->
+        <div class="sidebar-content">
+            <div class="sidebar-pane" id="home">
+                <h1 style="text-transform:uppercase" class="sidebar-header">
+                    Accès au Droit
+                    <span class="sidebar-close" id="close"><i class="fa fa-caret-left"></i></span>
+                </h1>
+				
+				<div class="presentation" id="defaut">
+					
+					</br>
+					<i>Cliquez sur un point de la carte pour afficher les informations / cocher les catégories en légende pour isoler les points correspondants</i>
+					</br>
+					
+					<div id="legende">
+						</br>
+						<h3>Spécialité de l'association</h3>
+						<button class="bouton_on" onclick="filter('SOC')" title="droit au travail, contrats de travail, dispositifs sociaux d'assurance et droit à la sécurité sociale" id="CHECK_SPE_SOC" name="Droits sociaux" value="sociaux">• Droits sociaux</button><br/>
+						<button class="bouton_on" onclick="filter('ETR')" title="droit des étrangers" id="CHECK_SPE_ETR" name="droit des étrangers" value="étrangers" >• Droit des étrangers</button><br/>
+						<button class="bouton_on" onclick="filter('RAC')" title="violences à caractère raciste" id="CHECK_SPE_RAC" name="Violences à caractère raciste" value="raciste">• Violences à caractère raciste</button><br/>
+						<button class="bouton_on" onclick="filter('SEX')" title="violences à caractère sexiste" id="CHECK_SPE_SEX" name="Violences à caractère sexiste" value="sexiste">• Violences à caractère sexiste</button><br/>
+						<button class="bouton_on" onclick="filter('LCD')" title="lutte contre les discriminations" id="CHECK_SPE_LCD" name="Lutte contre les discriminations" value="lutte">• Lutte contre les discriminations</button>
+						<h3>Association</h3>
+						<div class="gauche">
+						<button class="bouton_asso" onclick="filter_asso('AMF')" title="Association des Marocains en France" id="CHECK_SPE_SOC" value="sociaux"><img id="picto_nat" src="img/PICTOSleg_01.png" style="width:20px; padding-right:10px;" />AMF</button><br/>
+						<button class="bouton_asso" onclick="filter_asso('ATF')" title="Association des Tunisiens en France" id="CHECK_SPE_ETR" value="étrangers" ><img id="picto_nat" src="img/PICTOSleg_02.png" style="width:20px; padding-right:10px;" />ATF</button><br/>
+						<button class="bouton_asso" onclick="filter_asso('ATMF')" title="Association des Travailleurs Maghrébins de France" id="CHECK_SPE_RAC" value="raciste"><img id="picto_nat" src="img/PICTOSleg_03.png" style="width:20px; padding-right:10px;" />ATMF</button><br/>
+						<button class="bouton_asso" onclick="filter_asso('DAL')" title="Droit au Logement" id="CHECK_SPE_SEX" value="sexiste"><img id="picto_nat" src="img/PICTOSleg_04.png" style="width:20px; padding-right:10px;" />DAL</button><br/>
+						<button class="bouton_asso" onclick="filter_asso('FASTI')" title="Fédération des associations de solidarité avec tous.te.s les immigré.e.s" id="CHECK_SPE_LCD" value="lutte"><img id="picto_nat" src="img/PICTOSleg_05.png" style="width:20px; padding-right:10px;" />FASTI</button><br/>
+						<button class="bouton_asso" onclick="filter_asso('FIAISM')" title="Femmes Inter Associations Inter Service Migrants" id="CHECK_SPE_LCD" value="lutte"><img id="picto_nat" src="img/PICTOSleg_06.png" style="width:20px; padding-right:10px;" />FIA-ISM</button>
+						</div>
+						<div class="droite">
+						<button class="bouton_asso" onclick="filter_asso('FNDMDP')" title="Fédération Nationale des Maisons des Potes" id="CHECK_SPE_LCD" value="lutte"><img id="picto_nat" src="img/PICTOSleg_12.png" style="width:20px; padding-right:10px;" />FNDMDP</button><br/>
+						<button class="bouton_asso" onclick="filter_asso('FTCR')" title="Fédération des Tunisiens pour une Citoyenneté des deux Rives" id="CHECK_SPE_LCD" value="lutte"><img id="picto_nat" src="img/PICTOSleg_11.png" style="width:20px; padding-right:10px;" />FTCR</button><br/>
+						<button class="bouton_asso" onclick="filter_asso('GISTI')" title="Groupe d'information et de soutien des immigrés" id="CHECK_SPE_LCD" value="lutte"><img id="picto_nat" src="img/PICTOSleg_10.png" style="width:20px; padding-right:10px;" />GISTI</button><br/>
+						<button class="bouton_asso" onclick="filter_asso('MRAP')" title="Mouvement contre le racisme et pour l'amitié entre les peuples" id="CHECK_SPE_LCD" value="lutte"><img id="picto_nat" src="img/PICTOSleg_09.png" style="width:20px; padding-right:10px;" />MRAP</button><br/>
+						<button class="bouton_asso" onclick="filter_asso('SOS')" title="SOS Racisme" id="CHECK_SPE_LCD" value="lutte"><img id="picto_nat" src="img/PICTOSleg_08.png" style="width:20px; padding-right:10px;" />SOS Racisme</button><br/><br/>
+						</div>
+					</div>
+					<div id="texte">
+						</br>
+						<h1>Rétablir l’égalité en luttant contre les discriminations</h1>
+						<p class="lorem"><strong>La prévention et la lutte contre les discriminations est un domaine d’intervention historique de la politique de la ville. Chaque année, ce sont plus de 10 millions d’euros de crédit de la politique de la ville qui sont mobilisés pour contribuer à cette priorité stratégique.</strong></p>
+						<p class="lorem">Ses champs d’intervention recouvrent l’accès aux droits, l’accompagnement des victimes de discriminations, les actions d’éducation ou de communication contre le racisme ou le sexisme, la construction d’une histoire partagée des territoires de la politique de la ville…</p>
+						<p class="lorem">Parmi les critères énoncés par la loi, la prévention des discriminations liées à l’origine, réelle ou supposée, et la discrimination territoriale à l’adresse sont éligibles au soutien et aux financements sur les crédits spécifiques de la politique de la ville. Souvent dénoncées par les résidents des quartiers, les discriminations constituent une forte demande sociale et nécessitent un travail étroit avec les habitants en lien avec les conseils citoyens. </p>
+						<p class="lorem">La lutte contre les discriminations constitue un axe transversal des contrats de ville pour combattre les inégalités. Elle s’attache à lever le déni des acteurs publics et privés, à mettre des mots sur la réalité vécue et à renforcer l’enjeu fondamental qu’est la citoyenneté. Elle repose sur une approche intégrée afin de mobiliser tous les partenaires du contrat de ville (habitants, associations, entreprises, collectivités).</p>
+						<p class="lorem">Afin d’aider les acteurs territoriaux à répondre à cet enjeu majeur, le Commissariat général à l'égalité des territoires (CGET) met à leur disposition différents dispositifs qu’ils peuvent mobiliser en tant que de besoin dans le cadre des contrats de ville :</p>
+						<div style="padding-left:20px">
+							<p class="lorem"><strong>&rarr; les diagnostics territoriaux</strong></p>
+							<p class="lorem"><strong>&rarr; la formation des acteurs locaux</strong></p>
+							<p class="lorem"><strong>&rarr; les plans territoriaux de lutte contre les discriminations</strong></p>
+							<p class="lorem"><strong>&rarr; l’accompagnement des acteurs à la mise en œuvre</strong></p>
+						</div>
+					</div>
+					
+					<br/>
+					<p><i>Sources : <a href="https://www.cget.gouv.fr/territoires/quartiers-de-la-politique-de-la-ville" style="text-decoration:none;" target="_blank ">DVCU</a> • Réalisation : <a href="https://www.cget.gouv.fr/ressources/cartotheque" style="text-decoration:none;" target="_blank ">CGET service cartographie</a> • Dernière mise à jour : 27 novembre 2018</i></p>
+				
+				</div>
+
+				<div class="ol-popup" id="popup">
+					<div id="titre"></div>
+					<div id="coordonnees"></div>
+					<div id="spe"></div>
+					<div id="acc"></div>					
+					<div id="pub"></div>
+				</div>
+				
 	
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://unpkg.com/leaflet@1.0.3/dist/leaflet.js"></script>
+				
+            </div>
+
+            <div class="sidebar-pane" id="profile">
+                <h1 class="sidebar-header">Profile<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+            </div>
+
+        </div>
+    </div>
+
+
+	<div id="mapid" class="sidebar-map"></div>
+	
+    <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"></script>
+    <script src="https://turbo87.github.io/sidebar-v2/js/leaflet-sidebar.js"></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/tabletop.js/1.5.1/tabletop.min.js'></script>
+	
+	<script type="text/javascript" src="data/departements.js"></script>
 	<script src="src/leaflet-search.js"></script>
-	<script src="https://rawgit.com/yigityuce/Leaflet.Control.Custom/master/Leaflet.Control.Custom.js"></script>
-	
-	<script type="text/javascript" src="data/associations.js"></script>
-	
+	<script type="text/javascript" src="data/regions.js"></script>
+
 	
     <script>
 		
-		// Initialisation des variables pour le filtre attributaire
+			
+		// Création de la carte
+		var map = L.map('mapid', {maxZoom:17, minZoom:5})
+		.setView([46.5, 2], 6);
+		map.zoomControl.setPosition('topright');
 		
-		var SPE_ETR = "oui";
-		var SPE_SOC = "oui";
-		var SPE_SEX = "oui";
-		var SPE_RAC = "oui";
-		var SPE_LCD = "oui";		
-		var acc_soc = "oui"; 
-		var acc_jur = "oui"; 
-		var acc_psy = "oui"; 
-		var acc_med = "oui"; 
-		var pub_ag = "oui";
-		var pub_fe = "oui";
-		var pub_tt = "oui";
-		
-		//var tableau = ["SPE_ETR", "SPE_SOC", "SPE_SEX", "SPE_RAC"];
-		//var tableau = ['SPE_ETR', 'SPE_SOC']
-		
-		
-		//Couleur par défaut des popup
-		var title_color = "727272";
-		
-		//Définition et ajout des picto
+		//Définition des pictos
 		var LeafIcon = L.Icon.extend({
 		options: {
-			//shadowUrl: 'shadow.png',
+			//shadowUrl: 'img/shadow.png',
 			//shadowSize:   [23, 45],
 			//shadowAnchor: [0, 0],
-			iconSize:     [27, 30],
-			iconAnchor:   [15, 30],
-			popupAnchor:  [0, -30]
+			//iconSize:     [25, 25],
+			//iconAnchor:   [0, 0],
+			//popupAnchor:  [0, -30]
 		}
 		});
 		
-		var orangeIcon = new LeafIcon({iconUrl: 'img/PICTOS-01.png'}),
-			vertIcon = new LeafIcon({iconUrl: 'img/PICTOS-02.png'}),
-			violetIcon = new LeafIcon({iconUrl: 'img/PICTOS-03.png'}),
-			roseFonceIcon = new LeafIcon({iconUrl: 'img/PICTOS-04.png'}),
-			bleuIcon = new LeafIcon({iconUrl: 'img/PICTOS-05.png'});
-			rougeIcon = new LeafIcon({iconUrl: 'img/PICTOS-06.png'});
-			jauneIcon = new LeafIcon({iconUrl: 'img/PICTOS-08.png'}),
-			vertFonceIcon = new LeafIcon({iconUrl: 'img/PICTOS-09.png'}),
-			roseIcon = new LeafIcon({iconUrl: 'img/PICTOS-10.png'}),
-			marronIcon = new LeafIcon({iconUrl: 'img/PICTOS-11.png'}),
-			bleuFonceIcon = new LeafIcon({iconUrl: 'img/PICTOS-12.png'});
-			bordeauxIcon = new LeafIcon({iconUrl: 'img/PICTOS-13.png'});
+		var picto_AMF = new LeafIcon({iconUrl: 'img/PICTOS_petits_01.png', iconSize: [25,31], iconAnchor:[12.5,31]}),
+			picto_ATF = new LeafIcon({iconUrl: 'img/PICTOS_petits_02.png', iconSize: [25,31], iconAnchor:[12.5,31]}),
+			picto_ATMF = new LeafIcon({iconUrl: 'img/PICTOS_petits_03.png', iconSize: [25,31], iconAnchor:[12.5,31]}),
+			picto_DAL = new LeafIcon({iconUrl: 'img/PICTOS_petits_04.png', iconSize: [25,31], iconAnchor:[12.5,31]}),
+			picto_FASTI = new LeafIcon({iconUrl: 'img/PICTOS_petits_05.png', iconSize: [25,31], iconAnchor:[12.5,31]}),
+			picto_FIAISM = new LeafIcon({iconUrl: 'img/PICTOS_petits_06.png', iconSize: [25,31], iconAnchor:[12.5,31]}),
+			picto_FNDMDP = new LeafIcon({iconUrl: 'img/PICTOS_petits_07.png', iconSize: [25,31], iconAnchor:[12.5,31]});
+			picto_FTCR = new LeafIcon({iconUrl: 'img/PICTOS_petits_08.png', iconSize: [25,31], iconAnchor:[12.5,31]});
+			picto_GISTI = new LeafIcon({iconUrl: 'img/PICTOS_petits_09.png', iconSize: [25,31], iconAnchor:[12.5,31]});
+			picto_MRAP = new LeafIcon({iconUrl: 'img/PICTOS_petits_10.png', iconSize: [25,31], iconAnchor:[12.5,31]});
+			picto_SOS = new LeafIcon({iconUrl: 'img/PICTOS_petits_11.png', iconSize: [25,31], iconAnchor:[12.5,31]});
 		
-		// Attribution d'une couleur par fédération
-		function colorIcon(fede) {
-			if (fede === 1) return orangeIcon;
-			if (fede === 2) return vertIcon;
-			if (fede === 3) return violetIcon;
-			if (fede === 4) return roseFonceIcon;
-			if (fede === 5) return bleuIcon;
-			if (fede === 6) return rougeIcon;
-			if (fede === 7) return jauneIcon;
-			if (fede === 8) return vertFonceIcon;
-			//if (fede === 9) return roseIcon;
-			//if (fede === 10) return marronIcon;
-			//if (fede === "11") return bleuFonceIcon;
-			//if (fede === "13") return bordeauxIcon;
-			else return bleuIcon;
-		}
+		var picto_AMF_on = new LeafIcon({iconUrl: 'img/PICTOS_01.png', iconSize: [41,51], iconAnchor:[20.5,51]}),
+			picto_ATF_on = new LeafIcon({iconUrl: 'img/PICTOS_02.png', iconSize: [41,51], iconAnchor:[20.5,51]}),
+			picto_ATMF_on = new LeafIcon({iconUrl: 'img/PICTOS_03.png', iconSize: [41,51], iconAnchor:[20.5,51]}),
+			picto_DAL_on = new LeafIcon({iconUrl: 'img/PICTOS_04.png', iconSize: [41,51], iconAnchor:[20.5,51]}),
+			picto_FASTI_on = new LeafIcon({iconUrl: 'img/PICTOS_05.png', iconSize: [41,51], iconAnchor:[20.5,51]}),
+			picto_FIAISM_on = new LeafIcon({iconUrl: 'img/PICTOS_06.png', iconSize: [41,51], iconAnchor:[20.5,51]}),
+			picto_FNDMDP_on = new LeafIcon({iconUrl: 'img/PICTOS_07.png', iconSize: [41,51], iconAnchor:[20.5,51]});
+			picto_FTCR_on = new LeafIcon({iconUrl: 'img/PICTOS_08.png', iconSize: [41,51], iconAnchor:[20.5,51]});
+			picto_GISTI_on = new LeafIcon({iconUrl: 'img/PICTOS_09.png', iconSize: [41,51], iconAnchor:[20.5,51]});
+			picto_MRAP_on = new LeafIcon({iconUrl: 'img/PICTOS_10.png', iconSize: [41,51], iconAnchor:[20.5,51]});
+			picto_SOS_on = new LeafIcon({iconUrl: 'img/PICTOS_11.png', iconSize: [41,51], iconAnchor:[20.5,51]});
 			
-		// Création de la carte
-		var map = L.map('mapid')
-			.setView([48, 2.2], 6);
-		map.zoomControl.setPosition('topright');
-		
-		
-		/*Ajout du fond de carte ign : TUTO https://geoservices.ign.fr/documentation/utilisation_web/wmts-leaflet.html
-		L.tileLayer("https://wxs.ign.fr/ujorz7d7mcjaj467ejaqcj6l/geoportail/wmts?service=WMTS&request=GetTile&version=1.0.0&tilematrixset=PM&tilematrix={z}&tilecol={x}&tilerow={y}&layer=ORTHOIMAGERY.ORTHOPHOTOS&format=image/jpeg&style=normal",
-			{
-				minZoom:0,
-				maxZoom:18,
-				tileSize:256
-			}
-		).addTo(map) ;*/
+		var picto_cible = new LeafIcon({iconUrl: 'img/PICTOS_cible.png', iconSize: [41,41], iconAnchor:[21,37]});
 
-		// Choix du fond de carte
+		// Choix du fond de carte 
 		var basemap = L.tileLayer('https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png', {
-		   attribution: '©OpenStreetMap, ©CartoDB, CGET service Carto',
-		   subdomains: 'abcd',
-		   maxZoom: 19
-		   }).addTo(map);
+			attribution: '<a href="https://www.cget.gouv.fr/ressources/cartotheque" target="blank">CGET service Carto</a>',
+			maxZoom: 17
+		}).addTo(map);
 		
-		// Création des popup
-		function onEachFeature(feature, layer) {
-		if(feature.properties.ID_FEDE=="01"){title_color="f0900f"} else if (feature.properties.ID_FEDE=="02"){title_color="99c11f"} else if (feature.properties.ID_FEDE=="03"){title_color="9d88be"} else if (feature.properties.ID_FEDE=="04"){title_color="dd4e8a"} else if (feature.properties.ID_FEDE=="05"){title_color="2dbbeb"} else if (feature.properties.ID_FEDE=="06"){title_color="f04600"}else if (feature.properties.ID_FEDE=="07"){title_color="ffdc00"} else if (feature.properties.ID_FEDE=="08"){title_color="3ca936"}else if (feature.properties.ID_FEDE=="09"){title_color="f29fc3"} else if (feature.properties.ID_FEDE=="10"){title_color="bc8000"}else if (feature.properties.ID_FEDE=="11"){title_color="0069b2"} else if (feature.properties.ID_FEDE=="13"){title_color="881002"};
-		var popupcontent = "<div id='popup' class='ol-popup'><h1 style='background-color: #"+title_color+"'>" + feature.properties.NOM_PERM + " (" +feature.properties.NOM_ASSO + ")</h1><h2></br>Coordonnées</h2><p class='email'>" + feature.properties.NOM_LIEU + ", " + feature.properties.ADRESSE + ", " + feature.properties.COMMUNE + "</p><p class='tel'>" + feature.properties.TEL_PERM + " / " + feature.properties.TEL_NAT + "</p><p>" + feature.properties.HORAIRE + "</p><p><a href=" + feature.properties.INTERNET + " style='text-decoration:none;' target='blank'>Site internet</a></p><h2 style='color: #"+title_color+"'>Spécialisé dans : </h2><p>"+feature.properties.SPE+"</p><h2 style='color: #"+title_color+"'>Accompagnement proposé au public : </h2><p>"+feature.properties.ACC+"+</p><h2 style='color: #"+title_color+"'>Public pris en charge : </h2><p>"+feature.properties.PUB+"</p><p  style='color: #727272; font-style: italic'>" + feature.properties.COM + "</p></div>";
-		layer.bindPopup(popupcontent);
+		//Ajout des données drive
+		var publicSpreadsheetUrl = 'https://docs.google.com/spreadsheets/d/17Fj-vJg50BOjz5WLqhSy-BPdouadxqnCTM81OUiRJ6E/edit?usp=sharing';
+		
+		function init() {
+			Tabletop.init({ 
+				key: publicSpreadsheetUrl,
+				callback: showInfo,
+				simpleSheet: true
+			})
 		}
 		
-		// Ajout des couches
-		//var REGIONS = new L.geoJSON(reg, {"color": "#ffffff", "weight": 1, "opacity": 0, fillOpacity: 0});
-		//var DEPARTEMENTS = new L.geoJSON(dep, {"color": "#ffffff", "weight": 1, "opacity": 0, fillOpacity: 0});
-		var Assos = new L.geoJSON;
+		//Création du layer de markers
+		var markersLayer = new L.layerGroup();
+		markersLayer.addTo(map);
 		
-		function AjouterAssosRAC() {
-		AssosRAC = L.geoJSON(Associations, {
-				pointToLayer: function(feature, latlng) {
-				return L.marker(latlng, {
-				icon: colorIcon(feature.properties.ID_FEDE)
-				});
-				},
+		//Ajout de la barre de recherche
+		var controlSearch = new L.Control.Search({
+			position:'topright',		
+			layer: markersLayer,
+			initial: false,
+			zoom: 12,
+			marker: false
+		});
+		map.addControl( controlSearch );
+	
+		//Aller chercher les données et créer les markers
+		function showInfo(data, tabletop) {
+		
+			for (var i in data){
 				
-				filter: function (feature, layer) {
-				if (feature.properties.SPE_RAC == "oui")
-				return true; },
-				onEachFeature: onEachFeature
-		}).addTo(map);	
-		}	
-		
-		function AjouterAssosSEX() {
-		AssosSEX = L.geoJSON(Associations, {
-				pointToLayer: function(feature, latlng) {
-				return L.marker(latlng, {
-				icon: colorIcon(feature.properties.ID_FEDE)
-				});
-				},
+				marker = new L.marker([data[i].LAT, data[i].LNG], {title: data[i].COMMUNE});
 				
-				filter: function (feature, layer) {
-				if (feature.properties.SPE_SEX == "oui")
-				return true; },
-				onEachFeature: onEachFeature
-		}).addTo(map);	
-		}	
-		
-		function AjouterAssosETR() {
-		AssosETR = L.geoJSON(Associations, {
-				pointToLayer: function(feature, latlng) {
-				return L.marker(latlng, {
-				icon: colorIcon(feature.properties.ID_FEDE)
-				});
-				},
+				if (data[i].ID_ASSO == 'AMF'){marker.setIcon(picto_AMF); marker.on('mouseover', function(e) {e.target.setIcon(picto_AMF_on); }); marker.on('mouseout', function(e) {e.target.setIcon(picto_AMF); });}
+				else if (data[i].ID_ASSO == 'ATF'){marker.setIcon(picto_ATF); marker.on('mouseover', function(e) {e.target.setIcon(picto_ATF_on); }); marker.on('mouseout', function(e) {e.target.setIcon(picto_ATF); });}
+				else if (data[i].ID_ASSO == 'ATMF'){marker.setIcon(picto_ATMF); marker.on('mouseover', function(e) {e.target.setIcon(picto_ATMF_on); }); marker.on('mouseout', function(e) {e.target.setIcon(picto_ATMF); });}
+				else if (data[i].ID_ASSO == 'DAL'){marker.setIcon(picto_DAL); marker.on('mouseover', function(e) {e.target.setIcon(picto_DAL_on); }); marker.on('mouseout', function(e) {e.target.setIcon(picto_DAL); });}
+				else if (data[i].ID_ASSO == 'FASTI'){marker.setIcon(picto_FASTI); marker.on('mouseover', function(e) {e.target.setIcon(picto_FASTI_on); }); marker.on('mouseout', function(e) {e.target.setIcon(picto_FASTI); });}
+				else if (data[i].ID_ASSO == 'FIAISM'){marker.setIcon(picto_FIAISM); marker.on('mouseover', function(e) {e.target.setIcon(picto_FIAISM_on); }); marker.on('mouseout', function(e) {e.target.setIcon(picto_FIAISM); });}
+				else if (data[i].ID_ASSO == 'FNDMDP'){marker.setIcon(picto_FNDMDP); marker.on('mouseover', function(e) {e.target.setIcon(picto_FNDMDP_on); }); marker.on('mouseout', function(e) {e.target.setIcon(picto_FNDMDP); });}
+				else if (data[i].ID_ASSO == 'FTCR'){marker.setIcon(picto_FTCR); marker.on('mouseover', function(e) {e.target.setIcon(picto_FTCR_on); }); marker.on('mouseout', function(e) {e.target.setIcon(picto_FTCR); });}
+				else if (data[i].ID_ASSO == 'GISTI'){marker.setIcon(picto_GISTI); marker.on('mouseover', function(e) {e.target.setIcon(picto_GISTI_on); }); marker.on('mouseout', function(e) {e.target.setIcon(picto_GISTI); });}
+				else if (data[i].ID_ASSO == 'MRAP'){marker.setIcon(picto_MRAP); marker.on('mouseover', function(e) {e.target.setIcon(picto_MRAP_on); }); marker.on('mouseout', function(e) {e.target.setIcon(picto_MRAP); });}
+				else if (data[i].ID_ASSO == 'SOS'){marker.setIcon(picto_SOS); marker.on('mouseover', function(e) {e.target.setIcon(picto_SOS_on); }); marker.on('mouseout', function(e) {e.target.setIcon(picto_SOS); });}
 				
-				filter: function (feature, layer) {
-				if (feature.properties.SPE_ETR == "oui")
-				return true; },
-				onEachFeature: onEachFeature
-		}).addTo(map);	
-		}	
-		
-		function AjouterAssosSOC() {
-		AssosSOC = L.geoJSON(Associations, {
-				pointToLayer: function(feature, latlng) {
-				return L.marker(latlng, {
-				icon: colorIcon(feature.properties.ID_FEDE)
-				});
-				},
+				marker.properties = {};
+				marker.properties.ID_ASSO = data[i].ID_ASSO;
+				marker.properties.NOM_ASSO = data[i].NOM_ASSO;
+				marker.properties.COULEUR = data[i].COULEUR;
+				marker.properties.NOM_PERM = data[i].NOM_PERM;
+				marker.properties.NOM_LIEU = data[i].NOM_LIEU;
+				marker.properties.TEL_PERM = data[i].TEL_PERM;
+				marker.properties.TEL_NAT = data[i].TEL_NAT;
+				marker.properties.ADRESSE = data[i].ADRESSE_GEOCOD;
+				marker.properties.CODE_POSTAL = data[i].CODE_POSTAL;
+				marker.properties.COMMUNE = data[i].COMMUNE;
+				marker.properties.INTERNET = data[i].INTERNET;
+				marker.properties.HORAIRE = data[i].HORAIRE;
+				marker.properties.SPE_ETR = data[i].SPE_ETR;
+				marker.properties.SPE_SOC = data[i].SPE_SOC;
+				marker.properties.SPE_SEX = data[i].SPE_SEX;
+				marker.properties.SPE_RAC = data[i].SPE_RAC;
+				marker.properties.SPE_LCD = data[i].SPE_LCD;
+				marker.properties.SPE = data[i].SPE;
+				marker.properties.ACC = data[i].ACC;
+				marker.properties.PUB = data[i].PUB;
+				marker.bindTooltip(data[i].COMMUNE, {className: 'Tooltips', closeButton: false, offset: [0,-30]});
+				marker.on('click', function(e) {popup(e.target); markerCible(e.target) });
 				
-				filter: function (feature, layer) {
-				if (feature.properties.SPE_SOC == "oui")
-				return true; },
-				onEachFeature: onEachFeature
-		}).addTo(map);	
-		}	
-		
-		function AjouterAssosLCD() {
-		AssosLCD = L.geoJSON(Associations, {pointToLayer: function(feature, latlng) {return L.marker(latlng, {icon: colorIcon(feature.properties.ID_FEDE)});},
-		filter: function (feature, layer) {if (feature.properties.SPE_LCD == "oui")return true; },
-		onEachFeature: onEachFeature
-		}).addTo(map);	
-		}	
-		
-		function AjouterAssosACC_SOC() {
-		AssosACC_SOC = L.geoJSON(Associations, {pointToLayer: function(feature, latlng) {return L.marker(latlng, {icon: colorIcon(feature.properties.ID_FEDE)});},
-		filter: function (feature, layer) {if (feature.properties.ACC_SOC == "oui")return true; },
-		onEachFeature: onEachFeature
-		}).addTo(map);	
-		}	
-		function AjouterAssosACC_MED() {
-		AssosACC_MED = L.geoJSON(Associations, {pointToLayer: function(feature, latlng) {return L.marker(latlng, {icon: colorIcon(feature.properties.ID_FEDE)});},
-		filter: function (feature, layer) {if (feature.properties.ACC_MED == "oui")return true; },
-		onEachFeature: onEachFeature
-		}).addTo(map);	
-		}	
-		function AjouterAssosACC_PSY() {
-		AssosACC_PSY = L.geoJSON(Associations, {pointToLayer: function(feature, latlng) {return L.marker(latlng, {icon: colorIcon(feature.properties.ID_FEDE)});},
-		filter: function (feature, layer) {if (feature.properties.ACC_PSY == "oui")return true; },
-		onEachFeature: onEachFeature
-		}).addTo(map);	
-		}	
-		function AjouterAssosACC_JUR() {
-		AssosACC_JUR = L.geoJSON(Associations, {pointToLayer: function(feature, latlng) {return L.marker(latlng, {icon: colorIcon(feature.properties.ID_FEDE)});},
-		filter: function (feature, layer) {if (feature.properties.ACC_JUR == "oui")return true; },
-		onEachFeature: onEachFeature
-		}).addTo(map);	
-		}	
-		
-		function AjouterAssosPUB_AG() {
-		AssosPUB_AG = L.geoJSON(Associations, {pointToLayer: function(feature, latlng) {return L.marker(latlng, {icon: colorIcon(feature.properties.ID_FEDE)});},
-		filter: function (feature, layer) {if (feature.properties.PUB_AG == "oui")return true; },
-		onEachFeature: onEachFeature
-		}).addTo(map);	
-		}	
-		function AjouterAssosPUB_FE() {
-		AssosPUB_FE = L.geoJSON(Associations, {pointToLayer: function(feature, latlng) {return L.marker(latlng, {icon: colorIcon(feature.properties.ID_FEDE)});},
-		filter: function (feature, layer) {if (feature.properties.PUB_FE == "oui")return true; },
-		onEachFeature: onEachFeature
-		}).addTo(map);	
-		}	
-		function AjouterAssosPUB_TT() {
-		AssosPUB_TT = L.geoJSON(Associations, {pointToLayer: function(feature, latlng) {return L.marker(latlng, {icon: colorIcon(feature.properties.ID_FEDE)});},
-		filter: function (feature, layer) {if (feature.properties.PUB_TT == "oui")return true; },
-		onEachFeature: onEachFeature
-		}).addTo(map);	
-		}	
-		
-		AjouterAssosRAC() ;
-		AjouterAssosSEX() ;
-		AjouterAssosETR() ;
-		AjouterAssosSOC() ;
-		//AjouterAssosLCD() ;
-		
-		AjouterAssosACC_SOC() ;
-		AjouterAssosACC_MED() ;
-		AjouterAssosACC_PSY() ;
-		AjouterAssosACC_JUR() ;
-		
-		AjouterAssosPUB_AG() ;
-		AjouterAssosPUB_FE() ;
-		AjouterAssosPUB_TT() ;
-		
-		
-		
-		//Ajout du filtre des associations
-		L.control.custom({
-                position: 'topleft',
-				content : 
-						'<div class="global">'+
-						  '<div class="bloc" id="bloc1"><h3>Association spécialisée dans</h3>'+
-                          '<div class="pretty p-curve p-default p-pulse"><input id="SPE_ETR" type="checkbox" checked>'+
-                          '<div class="state p-primary"><label>Droit des étrangers</label></div></div></br>'+
-						  '<div class="pretty p-curve p-default p-pulse"><input id="SPE_SOC" type="checkbox" checked>'+
-                          '<div class="state p-primary"><label>Droits sociaux</label></div></div></br>'+
-						  '<div class="pretty p-curve p-default p-pulse"><input id="SPE_RAC" type="checkbox" checked>'+
-                          '<div class="state p-primary"><label>Violences à caractère raciste</label></div></div></br>'+
-						  '<div class="pretty p-curve p-default p-pulse"><input id="SPE_SEX" type="checkbox" checked>'+
-                          '<div class="state p-primary"><label>Violences à caractère sexiste</label></div></div>'+
-						  
-						  '</div>'+
-						  
-						  '<div class="bloc" id="bloc2"><h3>Accompagnement proposé au public</h3>'+
-                          '<div class="pretty p-curve p-default p-pulse"><input id="ACC_SOC" type="checkbox" checked>'+
-                          '<div class="state p-success"><label>Accompagnement social</label></div></div></br>'+
-						  '<div class="pretty p-curve p-default p-pulse"><input id="ACC_JUR" type="checkbox" checked>'+
-                          '<div class="state p-success"><label>Accompagnement juridique</label></div></div></br>'+
-						  '<div class="pretty p-curve p-default p-pulse"><input id="ACC_PSY" type="checkbox" checked>'+
-                          '<div class="state p-success"><label>Accompagnement psychologique</label></div></div></br>'+
-						  '<div class="pretty p-curve p-default p-pulse"><input id="ACC_MED" type="checkbox" checked>'+
-                          '<div class="state p-success"><label>Accompagnement médical</label></div></div>'+
-						  '</div>'+
-						  
-						  '<div class="bloc" id="bloc3"><h3>Public pris en charge</h3>'+
-                          '<div class="pretty p-curve p-default p-pulse"><input id="PUB_AG" type="checkbox" checked>'+
-                          '<div class="state p-warning"><label>Personnes âgées</label></div></div></br>'+
-						  '<div class="pretty p-curve p-default p-pulse"><input id="PUB_FE" type="checkbox" checked>'+
-                          '<div class="state p-warning"><label>Femmes</label></div></div></br>'+
-						  '<div class="pretty p-curve p-default p-pulse"><input id="PUB_TT" type="checkbox" checked>'+
-                          '<div class="state p-warning"><label>Tout public</label></div></div></div>'+
-						'</div>',
-						  
-                classes : 'btn-group-sm',
-                style   :
-                {
-                    margin: '10px',
-                    padding: '0px 0 0 0',
-                    cursor: 'pointer',
-                },
-                events:
-                {
-                    click: function(data)
-                    {
-						//map.removeLayer(Assos);
-						
-						//tableau = [];
-						
-						if (data.target.id == "SPE_ETR"){ if (SPE_ETR == "oui"){map.removeLayer(AssosETR); SPE_ETR = "non"; $('#SPE_ETR').prop('checked', false);} else if (SPE_ETR == "non"){map.addLayer(AssosETR); SPE_ETR = "oui"; $('#SPE_ETR').prop('checked', true);}}
-						if (data.target.id == "SPE_SOC"){ if (SPE_SOC == "oui"){map.removeLayer(AssosSOC);SPE_SOC = "non";$('#SPE_SOC').prop('checked', false);} else if (SPE_SOC == "non"){map.addLayer(AssosSOC); SPE_SOC = "oui";$('#SPE_SOC').prop('checked', true);}}
-						if (data.target.id == "SPE_SEX"){ if (SPE_SEX == "oui"){map.removeLayer(AssosSEX);SPE_SEX = "non";$('#SPE_SEX').prop('checked', false);} else if (SPE_SEX == "non"){map.addLayer(AssosSEX); SPE_SEX = "oui";$('#SPE_SEX').prop('checked', true);}}
-						if (data.target.id == "SPE_RAC"){ if (SPE_RAC == "oui"){map.removeLayer(AssosRAC);SPE_RAC = "non";$('#SPE_RAC').prop('checked', false);} else if (SPE_RAC == "non"){map.addLayer(AssosRAC); SPE_RAC = "oui";$('#SPE_RAC').prop('checked', true);}}
-						if (data.target.id == "SPE_LCD"){ if (SPE_LCD == "oui"){map.removeLayer(AssosLCD);SPE_LCD = "non";$('#SPE_LCD').prop('checked', false);} else if (SPE_LCD == "non"){map.addLayer(AssosLCD); SPE_LCD = "oui";$('#SPE_LCD').prop('checked', true);}}
-						
-						if (data.target.id == "ACC_SOC"){ if (acc_soc == "oui"){map.removeLayer(AssosACC_SOC); acc_soc = "non";$('#ACC_SOC').prop('checked', false);} else if (acc_soc == "non"){map.addLayer(AssosACC_SOC); acc_soc = "oui";$('#ACC_SOC').prop('checked', true);}}
-						if (data.target.id == "ACC_JUR"){ if (acc_jur == "oui"){map.removeLayer(AssosACC_JUR); acc_jur = "non";$('#ACC_JUR').prop('checked', false);} else if (acc_jur == "non"){map.addLayer(AssosACC_JUR); acc_jur = "oui";$('#ACC_JUR').prop('checked', true);}}
-						if (data.target.id == "ACC_PSY"){ if (acc_psy == "oui"){map.removeLayer(AssosACC_PSY); acc_psy = "non";$('#ACC_PSY').prop('checked', false);} else if (acc_psy == "non"){map.addLayer(AssosACC_PSY); acc_psy = "oui";$('#ACC_PSY').prop('checked', true);}}
-						if (data.target.id == "ACC_MED"){ if (acc_med == "oui"){map.removeLayer(AssosACC_MED); acc_med = "non";$('#ACC_MED').prop('checked', false);} else if (acc_med == "non"){map.addLayer(AssosACC_MED); acc_med = "oui";$('#ACC_MED').prop('checked', true);}}
-						
-						if (data.target.id == "PUB_AG"){ if (pub_ag == "oui"){map.removeLayer(AssosPUB_AG); pub_ag = "non";$('#PUB_AG').prop('checked', false);} else if (pub_ag == "non"){map.addLayer(AssosPUB_AG); pub_ag = "oui";$('#PUB_AG').prop('checked', true);}}
-						if (data.target.id == "PUB_FE"){ if (pub_fe == "oui"){map.removeLayer(AssosPUB_FE); pub_fe = "non";$('#PUB_FE').prop('checked', false);} else if (pub_fe == "non"){map.addLayer(AssosPUB_FE); pub_fe = "oui";$('#PUB_FE').prop('checked', true);}}
-						if (data.target.id == "PUB_TT"){ if (pub_tt == "oui"){map.removeLayer(AssosPUB_TT); pub_tt = "non";$('#PUB_TT').prop('checked', false);} else if (pub_tt == "non"){map.addLayer(AssosPUB_TT); pub_tt = "oui";$('#PUB_TT').prop('checked', true);}}
-						
-					}
-                }
-            })
-            .addTo(map);
+				marker.addTo(markersLayer);
 			
-			/*Création de la barre de recherche par département et Région
-			var geoLayers = L.layerGroup([L.geoJson(reg),L.geoJson(dep)]);
-			var controlSearch = new L.Control.Search({
-				position:'topright',
-				layer: geoLayers,
-				propertyName: 'libgeo',				
-				initial: false,
-				zoom: 12,
-				marker: false,
-				moveToLocation: function(latlng, title, map) {
-					//map.fitBounds( latlng.layer.getBounds() );
-					var zoom = map.getBoundsZoom(latlng.layer.getBounds());
-					map.setView(latlng, zoom); // access the zoom
-				}
-			});
-			map.addControl(controlSearch);
-			map.removeLayer(geoLayers);*/
-			
-			
-			map.addControl( new L.Control.Search({
-				url: 'https://nominatim.openstreetmap.org/search/?countrycodes=fr&format=json&q={s}',
-				jsonpParam: 'json_callback',
-				position:'topright',
-				propertyName: 'display_name',
-				propertyLoc: ['lat','lon'],
-				marker: false,
-				zoom: 11,
-				autoCollapse: false,
-				autoType: false,
-				minLength: 2
-			}) );
-
-			
-			// Bouton "revenir à la vue par défaut"
-			vueInitiale = function(LaFonctionVueInitiale) {
-			var control = new (L.Control.extend({
-			options: { position: 'topright' },
-			onAdd: function (map) {
-				controlDiv = L.DomUtil.create('div', 'hello-world-button');
-				L.DomEvent
-					.addListener(controlDiv, 'click', L.DomEvent.stopPropagation)
-					.addListener(controlDiv, 'click', L.DomEvent.preventDefault)
-					.addListener(controlDiv, 'click', this.FonctionVueInitiale);
-
-				// Set CSS for the control border
-				var controlUI = L.DomUtil.create('div', 'leaflet-container leaflet-control-search', controlDiv);
-				controlUI.title = 'Revenir à la vue initiale';
-
-				// Set CSS for the control interior
-				var controlText = L.DomUtil.create('div', 'france-button', controlUI);
-				controlText.innerHTML = '<div style="background: url(img/France_off.png) no-repeat 2px 2px #fff"> ';
-
-				return controlDiv;
 			}
-			}));
+		}
 
-			control.FonctionVueInitiale = LaFonctionVueInitiale;
+		window.addEventListener('DOMContentLoaded', init)
+		
+		//Une cible sur le marker sélectionné
+		var markerCib;
+		function markerCible(e) {
+			if(markerCib) {map.removeLayer(markerCib);}
+			markerCib = new L.marker(new L.latLng(e._latlng), {icon: picto_cible});
+			markerCib.setZIndexOffset(-50);
+			markerCib.addTo(map);
+		}
+		
+		//Action au clic sur un marker
+		function popup(e) {
+			//ouverture de la sidebar
+			if (document.getElementById('sidebar').classList.contains('collapsed')){
+				sidebar.open('home');
+				}
+			
+			//Remplissage de la popup
+			document.getElementById('popup').style.display = "block";
+			document.getElementById('defaut').style.display = "none";
+			
+			document.getElementById('titre').innerHTML = "<h1 style='color:"+e.properties.COULEUR+"'>"+e.properties.NOM_PERM+" / "+e.properties.NOM_ASSO+"</h1>";
+			document.getElementById('coordonnees').innerHTML = "<h2 style='color:"+e.properties.COULEUR+"'>Coordonnées</h2><p class=email>"+e.properties.NOM_LIEU+" "+e.properties.ADRESSE+"</p><p class='tel'>"+e.properties.TEL_PERM+" / "+e.properties.TEL_NAT+"</p><p>"+e.properties.HORAIRE+"</p><p><a href="+e.properties.INTERNET+" target='blank' >&rarr; Aller sur le site internet</a></p>";
+			document.getElementById('spe').innerHTML = "<h2 style='color:"+e.properties.COULEUR+"'>Spécialité</h2><p>"+e.properties.SPE ;
+			document.getElementById('acc').innerHTML = "<h2 style='color:"+e.properties.COULEUR+"'>Accompagnement proposé au public</h2><p>"+e.properties.ACC;
+			document.getElementById('pub').innerHTML = "<h2 style='color:"+e.properties.COULEUR+"'>Public pris en charge</h2><p>"+e.properties.PUB ;
+		}
+		
+		//Ajout de la sidebar
+		var sidebar = L.control.sidebar('sidebar').addTo(map);
+		
+		//Events au clic sur la carte
+		map.on('click', function(e) {   
+			//remettre tous les markers
+			markersLayer.eachLayer(function (layer) {map.addLayer(layer);});
+			//fermer ou ouvrir la sidebar
+			if (document.getElementById('sidebar').classList.contains('collapsed')) {
+				sidebar.open('home');
+			}
+			else {
+				sidebar.close();
+			}
+			//remettre le texte d'intro
+			document.getElementById('popup').style.display = "none";
+			document.getElementById('defaut').style.display = "block";
+			//Supprimer le marker cible
+			if(markerCib) {map.removeLayer(markerCib);}
+			//remettre les boutons par défaut
+			document.getElementById("CHECK_SPE_ETR").setAttribute("class", "bouton_on");
+			document.getElementById("CHECK_SPE_SOC").setAttribute("class", "bouton_on");
+			document.getElementById("CHECK_SPE_RAC").setAttribute("class", "bouton_on");
+			document.getElementById("CHECK_SPE_SEX").setAttribute("class", "bouton_on");
+			document.getElementById("CHECK_SPE_LCD").setAttribute("class", "bouton_on");
+		});
+		
+		//Action au clic sur le bouton d'accueil
+		document.getElementById("logo").addEventListener("click", function(){
+			document.getElementById('popup').style.display = "none";
+			document.getElementById('defaut').style.display = "block";
+			if (document.getElementById('sidebar').classList.contains('collapsed')) {
+				sidebar.close();
+			}
+			else {
+				sidebar.open('home');
+			}
+		});
 
-			return control;
-			};
-
-			FonctionVueInitiale = function () { map.setView([48, 2.2], 6);;};
-			map.addControl(vueInitiale(FonctionVueInitiale));
-
+		// Filtrer par fédération 
+		function filter_asso (variable) {
+			if(markerCib) {map.removeLayer(markerCib);}
+			
+			document.getElementById("CHECK_SPE_ETR").setAttribute("class", "bouton_on");
+			document.getElementById("CHECK_SPE_SOC").setAttribute("class", "bouton_on");
+			document.getElementById("CHECK_SPE_RAC").setAttribute("class", "bouton_on");
+			document.getElementById("CHECK_SPE_SEX").setAttribute("class", "bouton_on");
+			document.getElementById("CHECK_SPE_LCD").setAttribute("class", "bouton_on");
+			
+			markersLayer.eachLayer(function (layer) {
+					if (layer.properties.ID_ASSO == variable) {
+					map.addLayer(layer);
+					} 
+					else {map.removeLayer(layer);}
+			});
+		}
+		
+		
+		//Filtrer par spécialité
+		function filter(variable) {
+		
+			if(markerCib) {map.removeLayer(markerCib);}
+			
+			if (variable == "ETR") {
+			if (document.getElementById("CHECK_SPE_ETR").value=="étrangers") {document.getElementById("CHECK_SPE_ETR").setAttribute("class", "bouton"); document.getElementById("CHECK_SPE_ETR").value= "non"} else if (document.getElementById("CHECK_SPE_ETR").value=="non"){document.getElementById("CHECK_SPE_ETR").setAttribute("class", "bouton_on"); document.getElementById("CHECK_SPE_ETR").value="étrangers";}
+			}
+			if (variable == "SOC") {
+			if (document.getElementById("CHECK_SPE_SOC").value=="sociaux") {document.getElementById("CHECK_SPE_SOC").setAttribute("class", "bouton"); document.getElementById("CHECK_SPE_SOC").value= "non";} else if (document.getElementById("CHECK_SPE_SOC").value=="non"){document.getElementById("CHECK_SPE_SOC").setAttribute("class", "bouton_on");document.getElementById("CHECK_SPE_SOC").value="sociaux";}
+			}
+			if (variable == "RAC") {
+			if (document.getElementById("CHECK_SPE_RAC").value=="raciste") {document.getElementById("CHECK_SPE_RAC").setAttribute("class", "bouton"); document.getElementById("CHECK_SPE_RAC").value= "non";} else if (document.getElementById("CHECK_SPE_RAC").value=="non"){document.getElementById("CHECK_SPE_RAC").setAttribute("class", "bouton_on");document.getElementById("CHECK_SPE_RAC").value="raciste";}
+			}
+			if (variable == "SEX") {
+			if (document.getElementById("CHECK_SPE_SEX").value=="sexiste") {document.getElementById("CHECK_SPE_SEX").setAttribute("class", "bouton"); document.getElementById("CHECK_SPE_SEX").value= "non";} else if (document.getElementById("CHECK_SPE_SEX").value=="non"){document.getElementById("CHECK_SPE_SEX").setAttribute("class", "bouton_on");document.getElementById("CHECK_SPE_SEX").value="sexiste";}
+			}
+			if (variable == "LCD") {
+			if (document.getElementById("CHECK_SPE_LCD").value=="lutte") {document.getElementById("CHECK_SPE_LCD").setAttribute("class", "bouton"); document.getElementById("CHECK_SPE_LCD").value= "non";} else if (document.getElementById("CHECK_SPE_LCD").value=="non"){document.getElementById("CHECK_SPE_LCD").setAttribute("class", "bouton_on");document.getElementById("CHECK_SPE_LCD").value="lutte";}
+			}
+			
+			markersLayer.eachLayer(function (layer) {
+					if (layer.properties.SPE.includes(document.getElementById("CHECK_SPE_ETR").value) || layer.properties.SPE.includes(document.getElementById("CHECK_SPE_SOC").value) || layer.properties.SPE.includes(document.getElementById("CHECK_SPE_RAC").value) || layer.properties.SPE.includes(document.getElementById("CHECK_SPE_SEX").value) || layer.properties.SPE.includes(document.getElementById("CHECK_SPE_LCD").value) ) {
+					map.addLayer(layer);
+					} 
+					else {map.removeLayer(layer);}
+				});
+		}
+		
    </script>
 	
 </body>

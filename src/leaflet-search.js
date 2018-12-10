@@ -81,9 +81,9 @@ L.Control.Search = L.Control.extend({
 		collapsed: true,				//collapse search control at startup
 		autoCollapse: false,			//collapse search control after submit(on button or on tips if enabled tipAutoSubmit)
 		autoCollapseTime: 1200,			//delay for autoclosing alert and collapse after blur
-		textErr: 'Localisation non trouvée',	//error message
-		textCancel: 'Annuler',		    //title in cancel button		
-		textPlaceholder: 'Trouver une localisation',   //placeholder value			
+		textErr: 'Commune non trouvée',	//error message
+		textCancel: 'Effacer',		    //title in cancel button		
+		textPlaceholder: 'Rechercher une commune',   //placeholder value			
 		hideMarkerOnCollapse: false,    //remove circle and marker on search control collapsed		
 		position: 'topleft',		
 		marker: {						//custom L.Marker or false for hide
@@ -287,6 +287,7 @@ L.Control.Search = L.Control.extend({
 	},
 
 	_createInput: function (text, className) {
+		var self = this;
 		var label = L.DomUtil.create('label', className, this._container);
 		var input = L.DomUtil.create('input', className, this._container);
 		input.type = 'text';
@@ -297,7 +298,7 @@ L.Control.Search = L.Control.extend({
 		input.autocapitalize = 'off';
 		input.placeholder = text;
 		input.style.display = 'none';
-		input.role = 'Chercher un territoire';
+		input.role = 'Rechercher';
 		input.id = input.role + input.type + input.size;
 		
 		label.htmlFor = input.id;
@@ -307,6 +308,11 @@ L.Control.Search = L.Control.extend({
 		L.DomEvent
 			.disableClickPropagation(input)
 			.on(input, 'keyup', this._handleKeypress, this)
+			.on(input, 'paste', function(e) {
+				setTimeout(function(e) {
+					self._handleKeypress(e);
+				},10,e);
+			}, this)
 			.on(input, 'blur', this.collapseDelayed, this)
 			.on(input, 'focus', this.collapseDelayedStop, this);
 		
@@ -539,18 +545,18 @@ L.Control.Search = L.Control.extend({
         loc.layer = layer;
         retRecords[ self._getPath(layer.options,propName) ] = loc;
       }
-      else if(self._getPath(layer.feature.properties,propName))
+      else if(self._getPath(layer.properties,propName))
       {
         loc = layer.getLatLng();
         loc.layer = layer;
-        retRecords[ self._getPath(layer.feature.properties,propName) ] = loc;
+        retRecords[ self._getPath(layer.properties,propName) ] = loc;
       }
       else {
         //throw new Error("propertyName '"+propName+"' not found in marker"); 
         console.warn("propertyName '"+propName+"' not found in marker"); 
       }
     }
-    if(layer instanceof L.Path || layer instanceof L.Polyline || layer instanceof L.Polygon)
+    else if(layer instanceof L.Path || layer instanceof L.Polyline || layer instanceof L.Polygon)
     {
       if(self._getPath(layer.options,propName))
       {
@@ -558,11 +564,11 @@ L.Control.Search = L.Control.extend({
         loc.layer = layer;
         retRecords[ self._getPath(layer.options,propName) ] = loc;
       }
-      else if(self._getPath(layer.feature.properties,propName))
+      else if(self._getPath(layer.properties,propName))
       {
         loc = layer.getBounds().getCenter();
         loc.layer = layer;
-        retRecords[ self._getPath(layer.feature.properties,propName) ] = loc;
+        retRecords[ self._getPath(layer.properties,propName) ] = loc;
       }
       else {
         //throw new Error("propertyName '"+propName+"' not found in shape"); 
@@ -571,16 +577,16 @@ L.Control.Search = L.Control.extend({
     }
     else if(layer.hasOwnProperty('feature'))//GeoJSON
     {
-      if(layer.feature.properties.hasOwnProperty(propName))
+      if(layer.properties.hasOwnProperty(propName))
       {
         if(layer.getLatLng && typeof layer.getLatLng === 'function') {
           loc = layer.getLatLng();
           loc.layer = layer;			
-          retRecords[ layer.feature.properties[propName] ] = loc;
+          retRecords[ layer.properties[propName] ] = loc;
         } else if(layer.getBounds && typeof layer.getBounds === 'function') {
           loc = layer.getBounds().getCenter();
           loc.layer = layer;			
-          retRecords[ layer.feature.properties[propName] ] = loc;
+          retRecords[ layer.properties[propName] ] = loc;
         } else {
           console.warn("Unknown type of Layer");
         }
@@ -670,9 +676,11 @@ L.Control.Search = L.Control.extend({
 				this.collapse();
 			break;
 			case 13://Enter
-				if(this._countertips == 1 || (this.options.firstTipSubmit && this._countertips > 0))
-          if(this._tooltip.currentSelection == -1)
-					  this._handleArrowSelect(1);
+				if(this._countertips == 1 || (this.options.firstTipSubmit && this._countertips > 0)) {
+          			if(this._tooltip.currentSelection == -1) {
+						this._handleArrowSelect(1);
+          			}
+				}
 				this._handleSubmit();	//do search
 			break;
 			case 38://Up
@@ -694,7 +702,6 @@ L.Control.Search = L.Control.extend({
 			case 36://Home
 			break;
 			default://All keys
-
 				if(this._input.value.length)
 					this._cancel.style.display = 'block';
 				else
@@ -776,13 +783,21 @@ L.Control.Search = L.Control.extend({
 		}
 	},
 	
-	_handleAutoresize: function() {	//autoresize this._input
-	    //TODO refact _handleAutoresize now is not accurate
-	    if (this._input.style.maxWidth != this._map._container.offsetWidth) //If maxWidth isn't the same as when first set, reset to current Map width
-	        this._input.style.maxWidth = L.DomUtil.getStyle(this._map._container, 'width');
+	_handleAutoresize: function() {
+	    var maxWidth;
 
-		if(this.options.autoResize && (this._container.offsetWidth + 45 < this._map._container.offsetWidth))
-			this._input.size = this._input.value.length<this._inputMinSize ? this._inputMinSize : this._input.value.length;
+		if (this._input.style.maxWidth !== this._map._container.offsetWidth) {
+			maxWidth = this._map._container.clientWidth;
+
+			// other side margin + padding + width border + width search-button + width search-cancel
+			maxWidth -= 10 + 20 + 1 + 30 + 22; 
+
+			this._input.style.maxWidth = maxWidth.toString() + 'px';
+		}
+
+		if (this.options.autoResize && (this._container.offsetWidth + 20 < this._map._container.offsetWidth)) {
+			this._input.size = this._input.value.length < this._inputMinSize ? this._inputMinSize : this._input.value.length;
+		}
 	},
 
 	_handleArrowSelect: function(velocity) {

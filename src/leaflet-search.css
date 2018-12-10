@@ -30,23 +30,26 @@
 	margin:4px 0 4px 4px;
 }
 .leaflet-control-search.search-load .search-input {
-	background: url('../images/loader.gif') no-repeat center right #fff;
+	background: url('../img/loader.gif') no-repeat center right #fff;
 }
 .leaflet-control-search.search-load .search-cancel {
 	visibility:hidden;
 }
 .leaflet-control-search .search-cancel {
 	display:block;
-	width:54px;
-	height:54px;
+	width:22px;
+	height:22px;
 	position:absolute;
-	right:0px;
+	right:28px;
 	margin:6px 0;
+	background: url('../img/search-icon.png') no-repeat 0 -46px;
 	text-decoration:none;
-		
+	filter: alpha(opacity=80);
+	opacity: 0.8;		
 }
 .leaflet-control-search .search-cancel:hover {
-	
+	filter: alpha(opacity=100);
+	opacity: 1;
 }
 .leaflet-control-search .search-cancel span {
 	display:none;/* comment for cancel button imageless */
@@ -61,13 +64,13 @@
 .leaflet-control-search .search-button {
 	display:block;
 	float:left;
-	width:54px;
-	height:54px;	
-	background: url('Geoloc_off.png') no-repeat 2px 2px #fff;
+	width:30px;
+	height:30px;	
+	background: url('../img/search-icon.png') no-repeat 4px 4px #fff;
 	border-radius:4px;
 }
 .leaflet-control-search .search-button:hover {
-	background: url('Geoloc_on.png') no-repeat 2px 2px #fafafa;
+	background: url('../img/search-icon.png') no-repeat 4px -20px #fafafa;
 }
 .leaflet-control-search .search-tooltip {
 	position:absolute;

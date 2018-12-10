@@ -1,0 +1,149 @@
+
+
+body {
+	padding: 0;
+	margin-right: auto;
+	margin-left:auto;
+	}
+
+html, body, #mapid {
+    height: 100%;
+    font: 10pt "Helvetica Neue", Arial, Helvetica, sans-serif;
+	color: #333333;
+	}
+
+a {
+	text-decoration:none;
+	color:grey;
+	}
+		
+.lorem {
+	em:1;
+	}
+		
+button  {
+	background-color: white;
+	font-weight: bold;
+	font-size:1 em;
+	box-shadow: 0px 0px 0px #aaa; 
+	border: none;
+	height: 21px;
+	color:#1d1d1b;
+	cursor: pointer;
+	vertical-align:middle;
+	}
+		
+#legende {
+	position:auto;
+	width: 100%;
+	}
+	
+#texte {
+	float:left;
+	width: 100%;
+	}
+		
+.bouton {
+	text-decoration: line-through;
+	}
+		
+.bouton_on:hover {
+	color:#f69788;
+	}
+		
+.bouton_asso:hover {
+	color:#f69788;
+	}
+		
+.bouton_on {	
+	}
+		
+#assos {
+	}
+		
+.gauche {
+	width:50%;
+	float: left;
+	}
+		
+.droite {
+	width:50%;
+	float: right;
+	}
+		
+.bouton_asso {
+	}
+		
+#popup {
+	display: none;
+	}
+		
+.Tooltips {
+	font-size:0.7em;
+	font-weight: bold;
+	padding:2px;
+	border:none;
+	color: #333333;
+	background-color: white;
+	}
+		
+strong {
+	color:#f69788;
+	em:1.6;
+	Font-Weight: Bold;
+	}
+		
+h1{
+	em:2;
+	color:#f69788;
+	}
+		
+h2{
+	align: left;
+	}
+	
+h3 {
+	font-size:0.9em;
+	text-decoration: underline;
+}
+		
+.ol-popup {
+	font-family: Trebuchet MS, verdana, sans serif; 
+	}
+
+.ol-popup h1,.ol-popup .h1 {
+	font-weight:bold;			
+	font-size:1.1em;			
+	}
+		
+.ol-popup h2 ,.ol-popup .h2{
+	font-weight:bold;
+	font-size:0.9em;
+	text-decoration: underline;
+	}
+		
+.ol-popup p {
+	font-size:0.8em;
+	line-height:1em;
+		}
+
+.ol-popup .email:before {
+	content:"";
+	background: url(img/picto_couriel.png) no-repeat;
+	display:inline-block;
+	width:10px;
+	height:10px;
+	background-size:contain;
+	margin-right:5px
+	}
+	
+.ol-popup .tel:before {
+	content:"";
+	background:url(img/picto_telephone.png) no-repeat;
+	display:inline-block;
+	width:10px;
+	height:10px;
+	background-size:contain;
+	margin-right:5px
+	}
+	

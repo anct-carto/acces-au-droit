@@ -1,4 +1,4 @@
-var reg = {
+var JS_reg = {
 "type": "FeatureCollection",
 "name": "reg_GEN_WGS84_UTF8",
 "crs": { "type": "name", "properties": { "name": "urn:ogc:def:crs:OGC:1.3:CRS84" } },
