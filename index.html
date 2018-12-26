@@ -35,12 +35,13 @@
 				
 				<div class="presentation" id="defaut">
 					
-					</br>
-					<i>Cliquez sur un point de la carte pour afficher les informations / cocher les catégories en légende pour isoler les points correspondants</i>
-					</br>
-					
+					<div id="texte1">
+						<p><strong>Carte interactive des permanences d’accès aux droits animées par les associations soutenues par le CGET au niveau national.</strong></p>
+						<p>Pour appuyer les professionnels et les publics dans leur démarche d’accès aux droits,  le CGET a réalisé cette carte de localisation des permanences qui permet d’obtenir des informations pratiques sur leur fonctionnement, une identification des grands domaines d’intervention et des modalités retenues pour le faire (accompagnement social, médical, …). Chaque permanence locale est accompagnée (qualification, spécialisation, veille juridique, …) par une association-tête de réseau dont elle est membre. </p>
+						<i>Cliquez sur un point de la carte pour afficher les informations / cocher les catégories en légende pour isoler les points correspondants</i>
+					</div>
 					<div id="legende">
-						</br>
+						
 						<h3>Spécialité de l'association</h3>
 						<button class="bouton_on" onclick="filter('SOC')" title="droit au travail, contrats de travail, dispositifs sociaux d'assurance et droit à la sécurité sociale" id="CHECK_SPE_SOC" name="Droits sociaux" value="sociaux">• Droits sociaux</button><br/>
 						<button class="bouton_on" onclick="filter('ETR')" title="droit des étrangers" id="CHECK_SPE_ETR" name="droit des étrangers" value="étrangers" >• Droit des étrangers</button><br/>
@@ -64,30 +65,16 @@
 						<button class="bouton_asso" onclick="filter_asso('SOS')" title="SOS Racisme" id="CHECK_SPE_LCD" value="lutte"><img id="picto_nat" src="img/PICTOSleg_08.png" style="width:20px; padding-right:10px;" />SOS Racisme</button><br/><br/>
 						</div>
 					</div>
-					<div id="texte">
-						</br>
-						<h1>Rétablir l’égalité en luttant contre les discriminations</h1>
-						<p class="lorem"><strong>La prévention et la lutte contre les discriminations est un domaine d’intervention historique de la politique de la ville. Chaque année, ce sont plus de 10 millions d’euros de crédit de la politique de la ville qui sont mobilisés pour contribuer à cette priorité stratégique.</strong></p>
-						<p class="lorem">Ses champs d’intervention recouvrent l’accès aux droits, l’accompagnement des victimes de discriminations, les actions d’éducation ou de communication contre le racisme ou le sexisme, la construction d’une histoire partagée des territoires de la politique de la ville…</p>
-						<p class="lorem">Parmi les critères énoncés par la loi, la prévention des discriminations liées à l’origine, réelle ou supposée, et la discrimination territoriale à l’adresse sont éligibles au soutien et aux financements sur les crédits spécifiques de la politique de la ville. Souvent dénoncées par les résidents des quartiers, les discriminations constituent une forte demande sociale et nécessitent un travail étroit avec les habitants en lien avec les conseils citoyens. </p>
-						<p class="lorem">La lutte contre les discriminations constitue un axe transversal des contrats de ville pour combattre les inégalités. Elle s’attache à lever le déni des acteurs publics et privés, à mettre des mots sur la réalité vécue et à renforcer l’enjeu fondamental qu’est la citoyenneté. Elle repose sur une approche intégrée afin de mobiliser tous les partenaires du contrat de ville (habitants, associations, entreprises, collectivités).</p>
-						<p class="lorem">Afin d’aider les acteurs territoriaux à répondre à cet enjeu majeur, le Commissariat général à l'égalité des territoires (CGET) met à leur disposition différents dispositifs qu’ils peuvent mobiliser en tant que de besoin dans le cadre des contrats de ville :</p>
-						<div style="padding-left:20px">
-							<p class="lorem"><strong>&rarr; les diagnostics territoriaux</strong></p>
-							<p class="lorem"><strong>&rarr; la formation des acteurs locaux</strong></p>
-							<p class="lorem"><strong>&rarr; les plans territoriaux de lutte contre les discriminations</strong></p>
-							<p class="lorem"><strong>&rarr; l’accompagnement des acteurs à la mise en œuvre</strong></p>
-						</div>
-					</div>
-					
 					<br/>
-					<p><i>Sources : <a href="https://www.cget.gouv.fr/territoires/quartiers-de-la-politique-de-la-ville" style="text-decoration:none;" target="_blank ">DVCU</a> • Réalisation : <a href="https://www.cget.gouv.fr/ressources/cartotheque" style="text-decoration:none;" target="_blank ">CGET service cartographie</a> • Dernière mise à jour : 27 novembre 2018</i></p>
-				
+					<div id="texte">
+					<p><i>Sources : <a href="https://www.cget.gouv.fr/territoires/quartiers-de-la-politique-de-la-ville" style="text-decoration:none;" target="_blank ">CGET Direction de la ville et de la cohésion urbaine</a> • Réalisation : <a href="https://www.cget.gouv.fr/ressources/cartotheque" style="text-decoration:none;" target="_blank ">CGET service cartographie</a> • Dernière mise à jour : 27 novembre 2018</i></p>
+					</div>
 				</div>
 
 				<div class="ol-popup" id="popup">
 					<div id="titre"></div>
 					<div id="coordonnees"></div>
+					<div id="internet"></div>
 					<div id="spe"></div>
 					<div id="acc"></div>					
 					<div id="pub"></div>
@@ -265,10 +252,16 @@
 			document.getElementById('defaut').style.display = "none";
 			
 			document.getElementById('titre').innerHTML = "<h1 style='color:"+e.properties.COULEUR+"'>"+e.properties.NOM_PERM+" / "+e.properties.NOM_ASSO+"</h1>";
-			document.getElementById('coordonnees').innerHTML = "<h2 style='color:"+e.properties.COULEUR+"'>Coordonnées</h2><p class=email>"+e.properties.NOM_LIEU+" "+e.properties.ADRESSE+"</p><p class='tel'>"+e.properties.TEL_PERM+" / "+e.properties.TEL_NAT+"</p><p>"+e.properties.HORAIRE+"</p><p><a href="+e.properties.INTERNET+" target='blank' >&rarr; Aller sur le site internet</a></p>";
+			document.getElementById('coordonnees').innerHTML = "<h2 style='color:"+e.properties.COULEUR+"'>Coordonnées</h2><p class=email>"+e.properties.NOM_LIEU+" "+e.properties.ADRESSE+"</p><p class='tel'>"+e.properties.TEL_PERM+" / "+e.properties.TEL_NAT+"</p><p>"+e.properties.HORAIRE+"</p>";
 			document.getElementById('spe').innerHTML = "<h2 style='color:"+e.properties.COULEUR+"'>Spécialité</h2><p>"+e.properties.SPE ;
 			document.getElementById('acc').innerHTML = "<h2 style='color:"+e.properties.COULEUR+"'>Accompagnement proposé au public</h2><p>"+e.properties.ACC;
 			document.getElementById('pub').innerHTML = "<h2 style='color:"+e.properties.COULEUR+"'>Public pris en charge</h2><p>"+e.properties.PUB ;
+			
+			console.log(e.properties.INTERNET);
+			if (e.properties.INTERNET){
+				document.getElementById('internet').innerHTML = "<p><a href="+e.properties.INTERNET+" target='blank' >&rarr; Aller sur le site internet</a></p>";
+				}
+			else document.getElementById('internet').innerHTML = " ";
 		}
 		
 		//Ajout de la sidebar
