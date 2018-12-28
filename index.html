@@ -29,7 +29,7 @@
         <div class="sidebar-content">
             <div class="sidebar-pane" id="home">
                 <h1 style="text-transform:uppercase" class="sidebar-header">
-                    Accès au Droit
+                    Accès aux Droits
                     <span class="sidebar-close" id="close"><i class="fa fa-caret-left"></i></span>
                 </h1>
 				
@@ -251,8 +251,8 @@
 			document.getElementById('popup').style.display = "block";
 			document.getElementById('defaut').style.display = "none";
 			
-			document.getElementById('titre').innerHTML = "<h1 style='color:"+e.properties.COULEUR+"'>"+e.properties.NOM_PERM+" / "+e.properties.NOM_ASSO+"</h1>";
-			document.getElementById('coordonnees').innerHTML = "<h2 style='color:"+e.properties.COULEUR+"'>Coordonnées</h2><p class=email>"+e.properties.NOM_LIEU+" "+e.properties.ADRESSE+"</p><p class='tel'>"+e.properties.TEL_PERM+" / "+e.properties.TEL_NAT+"</p><p>"+e.properties.HORAIRE+"</p>";
+			document.getElementById('titre').innerHTML = "<h1 style='color:"+e.properties.COULEUR+"'>Réseau "+e.properties.NOM_ASSO+"</br>"+e.properties.NOM_PERM+"</h1>";
+			document.getElementById('coordonnees').innerHTML = "<h2 style='color:"+e.properties.COULEUR+"'>Coordonnées</h2><p class=email>"+e.properties.NOM_LIEU+", "+e.properties.ADRESSE+"</p><p class='tel'>"+e.properties.TEL_PERM+" / "+e.properties.TEL_NAT+"</p><p>"+e.properties.HORAIRE+"</p>";
 			document.getElementById('spe').innerHTML = "<h2 style='color:"+e.properties.COULEUR+"'>Spécialité</h2><p>"+e.properties.SPE ;
 			document.getElementById('acc').innerHTML = "<h2 style='color:"+e.properties.COULEUR+"'>Accompagnement proposé au public</h2><p>"+e.properties.ACC;
 			document.getElementById('pub').innerHTML = "<h2 style='color:"+e.properties.COULEUR+"'>Public pris en charge</h2><p>"+e.properties.PUB ;
