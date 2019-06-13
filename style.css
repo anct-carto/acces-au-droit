@@ -40,7 +40,7 @@ button {
 	}
 		
 .bouton {
-	text-decoration: line-through;
+	color:#f69788;
 	}
 		
 .bouton_on:hover {
@@ -64,6 +64,18 @@ button {
 #popup {
 	display: none;
 	}
+	
+#retour {
+	color:grey;
+	font-Weight: Bold;
+	font-size:0.8em;
+	padding-top:20px;
+	cursor:pointer;
+}
+
+#retour:hover {
+	color:#f69788;
+}
 		
 .Tooltips {
 	font-size:1.2em;
